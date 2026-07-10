@@ -23,6 +23,7 @@ export default function Dashboard() {
   const [error, setError] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
   const [statusFilter, setStatusFilter] = useState<'all' | 'yes' | 'no'>('all')
+  const [deletingId, setDeletingId] = useState<string | null>(null)
 
   // Check if passcode is saved in local storage on mount
   useEffect(() => {
@@ -103,6 +104,31 @@ export default function Dashboard() {
       })
     } catch {
       return dateStr
+    }
+  }
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this RSVP?')) return
+
+    setDeletingId(id)
+    try {
+      const code = passcode || localStorage.getItem('dashboard_passcode') || ''
+      const res = await fetch(`/api/admin/rsvps?id=${id}`, {
+        method: 'DELETE',
+        headers: {
+          'x-passcode': code
+        }
+      })
+      if (res.ok) {
+        setRsvps(prev => prev.filter(r => r._id !== id))
+      } else {
+        const errData = await res.json()
+        alert(errData.message || 'Failed to delete RSVP')
+      }
+    } catch (err) {
+      alert('Network error. Failed to delete RSVP.')
+    } finally {
+      setDeletingId(null)
     }
   }
 
@@ -265,6 +291,7 @@ export default function Dashboard() {
                     <th style={{ padding: '16px 20px', fontSize: '12px', fontWeight: 600, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Wishes / Blessings</th>
                     <th style={{ padding: '16px 20px', fontSize: '12px', fontWeight: 600, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Date Submitted</th>
                     <th style={{ padding: '16px 20px', fontSize: '12px', fontWeight: 600, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Data Source</th>
+                    <th style={{ padding: '16px 20px', fontSize: '12px', fontWeight: 600, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', textAlign: 'right' }}>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -323,6 +350,29 @@ export default function Dashboard() {
                         }}>
                           {rsvp.source === 'mongodb' ? 'Cloud Atlas' : 'Local File'}
                         </span>
+                      </td>
+
+                      {/* Actions */}
+                      <td style={{ padding: '16px 20px', textAlign: 'right' }}>
+                        <button
+                          onClick={() => handleDelete(rsvp._id)}
+                          disabled={deletingId === rsvp._id}
+                          style={{
+                            background: 'transparent',
+                            border: 'none',
+                            color: 'hsl(355, 65%, 50%)',
+                            cursor: 'pointer',
+                            fontSize: '13px',
+                            fontWeight: 500,
+                            padding: '4px 8px',
+                            borderRadius: '4px',
+                            transition: 'all 0.2s',
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'hsl(355, 60%, 96%)'}
+                          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                        >
+                          {deletingId === rsvp._id ? 'Deleting...' : '🗑 Delete'}
+                        </button>
                       </td>
 
                     </tr>

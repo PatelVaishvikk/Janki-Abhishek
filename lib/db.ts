@@ -1,4 +1,5 @@
 import clientPromise from './mongodb'
+import { ObjectId } from 'mongodb'
 import fs from 'fs'
 import path from 'path'
 
@@ -96,4 +97,32 @@ export async function getRSVPs(): Promise<(RSVP & { _id: string; source: string 
       return []
     }
   }
+}
+
+export async function deleteRSVP(id: string) {
+  // 1. Delete from local file
+  try {
+    ensureLocalFile()
+    if (fs.existsSync(LOCAL_DATA_FILE)) {
+      const localData = JSON.parse(fs.readFileSync(LOCAL_DATA_FILE, 'utf-8'))
+      const filteredData = localData.filter((item: any) => item._id !== id)
+      fs.writeFileSync(LOCAL_DATA_FILE, JSON.stringify(filteredData, null, 2), 'utf-8')
+    }
+  } catch (err) {
+    console.error('[DB] Local file delete failed:', err)
+  }
+
+  // 2. Delete from MongoDB if not a local-only ID
+  if (!id.startsWith('local_')) {
+    try {
+      const client = await clientPromise
+      const db = client.db('baby-shower')
+      const result = await db.collection('rsvps').deleteOne({ _id: new ObjectId(id) })
+      console.log('[DB] Deleted RSVP from MongoDB:', id, 'Deleted count:', result.deletedCount)
+      return { success: true, count: result.deletedCount }
+    } catch (mongoErr) {
+      console.warn('[DB] MongoDB delete failed:', mongoErr)
+    }
+  }
+  return { success: true }
 }
