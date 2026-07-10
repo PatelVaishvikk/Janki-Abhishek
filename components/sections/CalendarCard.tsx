@@ -2,8 +2,8 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 
-const GCal = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Baby+Shower+%E2%80%94+Manish+%26+Riddhi&dates=20260816T083000Z/20260816T133000Z&details=Baby+Shower+Celebration&location=Manek+Chowk%2C+763-765+Harrow+Road%2C+Wembley+HA0+2LW'
-const ICS  = 'BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nUID:babyshower-manish-riddhi@invite\nDTSTAMP:20260101T000000Z\nDTSTART:20260816T083000Z\nDTEND:20260816T133000Z\nSUMMARY:Baby Shower — Manish & Riddhi\nLOCATION:Manek Chowk\\, 763-765 Harrow Road\\, Wembley HA0 2LW\nEND:VEVENT\nEND:VCALENDAR'
+const GCal = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=Baby+Shower+%E2%80%94+Manish+%26+Riddhi&dates=20260816T083000Z/20260816T133000Z&details=Baby+Shower+Celebration&location=Manek+Chowk%2C+763-765+Harrow+Road%2C+Wembley%2C+HA0+2LW%2C+United+Kingdom'
+const ICS  = 'BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nUID:babyshower-manish-riddhi@invite\nDTSTAMP:20260101T000000Z\nDTSTART:20260816T083000Z\nDTEND:20260816T133000Z\nSUMMARY:Baby Shower — Manish & Riddhi\nLOCATION:Manek Chowk\\, 763-765 Harrow Road\\, Wembley\\, HA0 2LW\\, United Kingdom\nEND:VEVENT\nEND:VCALENDAR'
 
 export function CalendarCard() {
   const ref = useRef<HTMLDivElement>(null)

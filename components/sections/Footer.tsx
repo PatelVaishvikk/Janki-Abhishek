@@ -44,7 +44,7 @@ export function Footer() {
         {/* Venue recap */}
         <p className="text-xs text-neutral-400 max-w-[24ch] leading-relaxed">
           Manek Chowk<br />
-          763–765 Harrow Road, Wembley HA0 2LW
+          763–765 Harrow Road<br />Wembley, HA0 2LW<br />United Kingdom
         </p>
 
         {/* Ornament */}

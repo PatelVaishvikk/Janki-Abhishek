@@ -11,7 +11,7 @@ const GOOGLE_CAL_URL =
   '&text=Baby+Shower+%E2%80%94+Manish+%26+Riddhi' +
   '&dates=20260816T083000Z/20260816T133000Z' +
   '&details=Baby+Shower+Celebration+for+Manish+%26+Riddhi' +
-  '&location=Manek+Chowk%2C+763-765+Harrow+Road%2C+Wembley+HA0+2LW'
+  '&location=Manek+Chowk%2C+763-765+Harrow+Road%2C+Wembley%2C+HA0+2LW%2C+United+Kingdom'
 
 const ICS_CONTENT = `BEGIN:VCALENDAR
 VERSION:2.0
@@ -23,7 +23,7 @@ DTSTART:20260816T083000Z
 DTEND:20260816T133000Z
 SUMMARY:Baby Shower — Manish & Riddhi
 DESCRIPTION:Baby Shower Celebration. Let's shower the Mom-to-Be with love & blessings!
-LOCATION:Manek Chowk\\, 763-765 Harrow Road\\, Wembley HA0 2LW
+LOCATION:Manek Chowk\\, 763-765 Harrow Road\\, Wembley\\, HA0 2LW\\, United Kingdom
 END:VEVENT
 END:VCALENDAR`
 

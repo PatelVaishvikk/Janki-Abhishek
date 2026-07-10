@@ -11,7 +11,9 @@ export function FooterCard() {
           Manish <span className="font-display italic" style={{ fontWeight:300, color:'hsl(38,15%,58%)' }}>&amp;</span> Riddhi
         </p>
         <p style={{ marginTop:'5px', fontSize:'11px', letterSpacing:'0.12em', textTransform:'uppercase', color:'hsl(38,10%,56%)' }}>Sunday, 16th August 2026</p>
-        <p style={{ marginTop:'3px', fontSize:'11px', color:'hsl(38,8%,66%)' }}>Manek Chowk · Wembley HA0 2LW</p>
+        <p style={{ marginTop:'3px', fontSize:'11px', color:'hsl(38,8%,66%)', lineHeight: 1.4 }}>
+          Manek Chowk<br />763–765 Harrow Road · Wembley, HA0 2LW · United Kingdom
+        </p>
         <div style={{ display:'flex', alignItems:'center', gap:'8px', justifyContent:'center', margin:'14px auto 0', width:'80px', opacity:0.35 }} aria-hidden="true">
           <div style={{ flex:1, height:'1px', background:'hsl(42,55%,60%)' }} />
           <span style={{ fontSize:'8px', color:'hsl(42,55%,55%)' }}>✦</span>

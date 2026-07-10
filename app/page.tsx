@@ -1,6 +1,8 @@
 'use client'
 
 import dynamic from 'next/dynamic'
+import { FallingElements } from '@/components/ui/FallingElements'
+import { StickyRSVP } from '@/components/ui/StickyRSVP'
 import { HeroCard }      from '@/components/sections/HeroCard'
 import { BlessingCard }  from '@/components/sections/BlessingCard'
 import { DateCard }      from '@/components/sections/DateCard'
@@ -19,17 +21,19 @@ const AudioPlayer = dynamic(
 export default function Home() {
   return (
     <main>
+      <FallingElements />
+      <StickyRSVP />
       <AudioPlayer src="/audio/background.mp3" />
 
       <div style={{ maxWidth: '480px', margin: '0 auto', padding: '16px 16px 48px' }}>
         <HeroCard      entered={true} />
-        <BlessingCard  />
         <DateCard      />
+        <CountdownCard />
+        <VenueCard     />
+        <BlessingCard  />
         <HostCard      />
         <FamilyCard    />
-        <CountdownCard />
         <RSVPCard      />
-        <VenueCard     />
         <FooterCard    />
       </div>
     </main>

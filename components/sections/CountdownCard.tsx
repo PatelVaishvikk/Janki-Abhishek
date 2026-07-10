@@ -41,20 +41,42 @@ export function CountdownCard() {
     return () => clearInterval(id)
   }, [])
 
+  const isEnded = mounted && (EVENT.getTime() - Date.now() <= 0)
+
   return (
     <motion.div ref={ref} className="card mb-4" style={{ padding:'28px 20px', textAlign:'center' }}
       initial={{ opacity:0, y:20 }} animate={inView?{opacity:1,y:0}:{}} transition={{ duration:0.7 }}>
       <p style={{ fontSize:'10px', letterSpacing:'0.2em', textTransform:'uppercase', color:'hsl(42,55%,48%)', fontWeight:500, marginBottom:'6px' }}>Counting down</p>
-      <h2 className="font-display italic" style={{ fontSize:'clamp(1.2rem,5vw,1.7rem)', fontWeight:400, color:'hsl(38,18%,26%)', marginBottom:'20px' }}>The big day arrives in…</h2>
-      <div style={{ display:'flex', gap:'8px' }} role="timer" aria-label="Countdown to baby shower">
-        <Tile value={mounted ? t.D : 0} label="Days" />
-        <div style={{ display:'flex', alignItems:'center', paddingBottom:'18px', color:'hsl(42,50%,70%)', fontWeight:300, fontSize:'1.4rem' }}>:</div>
-        <Tile value={mounted ? t.H : 0} label="Hours" />
-        <div style={{ display:'flex', alignItems:'center', paddingBottom:'18px', color:'hsl(42,50%,70%)', fontWeight:300, fontSize:'1.4rem' }}>:</div>
-        <Tile value={mounted ? t.M : 0} label="Mins" />
-        <div style={{ display:'flex', alignItems:'center', paddingBottom:'18px', color:'hsl(42,50%,70%)', fontWeight:300, fontSize:'1.4rem' }}>:</div>
-        <Tile value={mounted ? t.S : 0} label="Secs" />
-      </div>
+      <h2 className="font-display italic" style={{ fontSize:'clamp(1.2rem,5vw,1.7rem)', fontWeight:400, color:'hsl(38,18%,26%)', marginBottom:'20px' }}>
+        {isEnded ? "The Celebration" : "The big day arrives in…"}
+      </h2>
+
+      {isEnded ? (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="font-display"
+          style={{
+            fontSize: 'clamp(1.3rem, 5.5vw, 1.8rem)',
+            color: 'hsl(38,72%,36%)',
+            fontWeight: 600,
+            padding: '10px 0 6px',
+            lineHeight: 1.4
+          }}
+        >
+          The celebration is underway! 🎉
+        </motion.div>
+      ) : (
+        <div style={{ display:'flex', gap:'8px' }} role="timer" aria-label="Countdown to baby shower">
+          <Tile value={mounted ? t.D : 0} label="Days" />
+          <div style={{ display:'flex', alignItems:'center', paddingBottom:'18px', color:'hsl(42,50%,70%)', fontWeight:300, fontSize:'1.4rem' }}>:</div>
+          <Tile value={mounted ? t.H : 0} label="Hours" />
+          <div style={{ display:'flex', alignItems:'center', paddingBottom:'18px', color:'hsl(42,50%,70%)', fontWeight:300, fontSize:'1.4rem' }}>:</div>
+          <Tile value={mounted ? t.M : 0} label="Mins" />
+          <div style={{ display:'flex', alignItems:'center', paddingBottom:'18px', color:'hsl(42,50%,70%)', fontWeight:300, fontSize:'1.4rem' }}>:</div>
+          <Tile value={mounted ? t.S : 0} label="Secs" />
+        </div>
+      )}
     </motion.div>
   )
 }

@@ -12,7 +12,7 @@ A bespoke, mobile-first digital invitation for Manish & Riddhi's baby shower.
 ## Event Details
 - **Date:** Sunday, 16th August 2026
 - **Time:** 9:30 AM
-- **Venue:** Manek Chowk, 763–765 Harrow Road, Wembley HA0 2LW
+- **Venue:** Manek Chowk, 763–765 Harrow Road, Wembley, HA0 2LW, United Kingdom
 
 ## Getting Started
 

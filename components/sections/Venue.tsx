@@ -7,11 +7,11 @@ import { Button } from '@/components/primitives/Button'
 
 const VENUE = {
   name: 'Manek Chowk',
-  address: '763–765 Harrow Road, Wembley HA0 2LW',
+  address: '763–765 Harrow Road, Wembley, HA0 2LW, United Kingdom',
   mapsEmbed:
     'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2481.5!2d-0.3215!3d51.5432!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48760e5c86d8f9e3%3A0x0!2sManek+Chowk!5e0!3m2!1sen!2suk!4v1',
   directionsUrl:
-    'https://www.google.com/maps/dir/?api=1&destination=763+Harrow+Road+Wembley+HA0+2LW',
+    'https://www.google.com/maps/dir/?api=1&destination=Manek+Chowk,+763-765+Harrow+Road,+Wembley,+HA0+2LW,+United+Kingdom',
 }
 
 export function Venue() {

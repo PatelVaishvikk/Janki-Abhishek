@@ -15,15 +15,67 @@ export function HeroCard({ entered }: { entered: boolean }) {
       {/* Violet glow at bottom */}
       <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'180px', background:'radial-gradient(ellipse 90% 80% at 50% 100%, hsl(270,35%,90%,0.5), transparent 70%)', pointerEvents:'none' }} />
 
-      <div className="relative">
-        {/* Deities invocation in English */}
-        <motion.p {...anim(0.15)} style={{ fontSize: 'clamp(9px, 2.5vw, 12px)', whiteSpace: 'nowrap', color: 'hsl(38,72%,38%)', fontWeight: 600, letterSpacing: '0.02em', marginBottom: '16px' }}>
-          || Shri Ganpati Dada || Shri Umiya Mata || Shri Hanuman Dada ||
-        </motion.p>
+      {/* Floating floral petals and sparkles for extra visual delight */}
+      <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 1 }}>
+        <motion.span
+          style={{ position: 'absolute', top: '8%', left: '8%', fontSize: '13px', opacity: 0.35, display: 'inline-block' }}
+          animate={{ y: [0, -10, 0], rotate: [0, 20, 0], scale: [1, 1.15, 1] }}
+          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        >
+          🌸
+        </motion.span>
+        <motion.span
+          style={{ position: 'absolute', top: '25%', right: '8%', fontSize: '11px', opacity: 0.3, display: 'inline-block' }}
+          animate={{ y: [0, 8, 0], rotate: [0, -15, 0], scale: [1, 0.9, 1] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        >
+          ✨
+        </motion.span>
+        <motion.span
+          style={{ position: 'absolute', bottom: '25%', left: '10%', fontSize: '12px', opacity: 0.3, display: 'inline-block' }}
+          animate={{ y: [0, 10, 0], rotate: [0, 30, 0] }}
+          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+        >
+          🌸
+        </motion.span>
+        <motion.span
+          style={{ position: 'absolute', bottom: '15%', right: '10%', fontSize: '14px', opacity: 0.25, display: 'inline-block' }}
+          animate={{ y: [0, -12, 0], rotate: [0, -25, 0], scale: [1, 1.05, 1] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+        >
+          ✨
+        </motion.span>
+      </div>
 
-        {/* Radha-Krishna */}
-        <motion.div className="flex justify-center mb-4" {...anim(0.2)}>
-          <Image src="/images/radha-krishna.png" alt="Radha and Krishna" width={140} height={140} priority className="drop-shadow-2xl" />
+      <div className="relative" style={{ zIndex: 2 }}>
+        {/* Deities invocation in Sanskrit/English as requested */}
+        <motion.div
+          {...anim(0.15)}
+          style={{
+            fontSize: 'clamp(11px, 2.8vw, 13px)',
+            color: 'hsl(38,72%,38%)',
+            fontWeight: 600,
+            letterSpacing: '0.04em',
+            marginBottom: '20px',
+            lineHeight: 1.6
+          }}
+        >
+          <div>|| Shri Ganeshaya Namah ||</div>
+          <div>|| Shri Umiya Matayai Namah ||</div>
+          <div>|| Shri Hanumate Namah ||</div>
+        </motion.div>
+
+        {/* Radha-Krishna with a subtle floating animation */}
+        <motion.div
+          className="flex justify-center mb-4"
+          {...anim(0.2)}
+        >
+          <motion.div
+            animate={{ y: [0, -6, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <Image src="/images/radha-krishna.png" alt="Radha and Krishna" width={140} height={140} priority className="drop-shadow-2xl" />
+          </motion.div>
         </motion.div>
 
         {/* Badge */}
@@ -42,19 +94,51 @@ export function HeroCard({ entered }: { entered: boolean }) {
           request the pleasure of your company
         </motion.p>
 
-        {/* Date chip */}
+        {/* Date & Address chip */}
         <motion.div {...anim(0.7)}
-          style={{ display:'inline-block', padding:'10px 20px', borderRadius:'14px', background:'hsl(42,60%,96%)', border:'1px solid hsl(42,55%,80%)' }}>
-          <p className="font-display" style={{ fontSize:'clamp(1rem,4.5vw,1.2rem)', fontWeight:500, color:'hsl(38,72%,36%)', marginBottom:'2px' }}>
+          style={{
+            display:'inline-block',
+            padding:'16px 28px',
+            borderRadius:'16px',
+            background:'linear-gradient(135deg, hsl(44,70%,97%) 0%, hsl(42,60%,94%) 100%)',
+            border:'1px solid hsl(42,55%,80%)',
+            boxShadow: '0 2px 10px rgba(180,140,60,0.06)'
+          }}
+        >
+          <p className="font-display" style={{ fontSize:'clamp(1.15rem,5.2vw,1.4rem)', fontWeight:600, color:'hsl(38,72%,36%)', marginBottom:'4px' }}>
             Sunday, 16th August 2026
           </p>
-          <p style={{ fontSize:'12px', color:'hsl(38,12%,52%)' }}>9:30 AM · Manek Chowk, Wembley</p>
+          <p style={{ fontSize:'14px', fontWeight: 600, color:'hsl(38,15%,42%)' }}>9:30 AM</p>
+          <div style={{ width: '50px', height: '1px', background: 'hsl(42,40%,80%)', margin: '10px auto' }} />
+          <p className="font-display" style={{ fontSize:'16px', fontWeight: 700, color:'hsl(38,72%,38%)', marginBottom:'3px' }}>Manek Chowk</p>
+          <p style={{ fontSize:'14px', color:'hsl(38,10%,45%)', lineHeight: 1.5, width: '250px', margin: '0 auto', fontWeight: 500 }}>
+            763–765 Harrow Road<br />Wembley, HA0 2LW<br />United Kingdom
+          </p>
         </motion.div>
 
         {/* Tagline */}
         <motion.p {...anim(0.85)} style={{ marginTop:'14px', fontSize:'12px', fontWeight:600, letterSpacing:'0.14em', textTransform:'uppercase', color:'hsl(340,60%,56%)' }}>
           Let's shower the Mom-to-Be! 🌸
         </motion.p>
+
+        {/* Quick RSVP Button */}
+        <motion.div {...anim(0.95)} style={{ marginTop:'20px' }}>
+          <button
+            onClick={() => document.getElementById('rsvp')?.scrollIntoView({ behavior: 'smooth' })}
+            className="pill-btn pill-btn-outline"
+            style={{
+              padding: '10px 24px',
+              fontSize: '13px',
+              fontWeight: 600,
+              letterSpacing: '0.04em',
+              background: 'rgba(255,255,255,0.4)',
+              backdropFilter: 'blur(8px)',
+              cursor: 'pointer'
+            }}
+          >
+            💌 Quick RSVP
+          </button>
+        </motion.div>
       </div>
     </div>
   )
