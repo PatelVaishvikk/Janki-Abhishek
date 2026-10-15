@@ -34,11 +34,8 @@ export function FooterCard() {
         Janki &amp; Abhishek
       </p>
 
-      <div style={{ fontSize: '13px', letterSpacing: '0.06em', color: 'var(--gold-dark)', fontWeight: 600 }}>
-        <div>🙏 Jay Swaminarayan 🙏</div>
-        <div style={{ fontSize: '12px', color: 'var(--ink-secondary)', fontWeight: 500, marginTop: '3px' }}>
-          Das na das banavshoji
-        </div>
+      <div style={{ fontSize: '13px', letterSpacing: '0.08em', color: 'var(--gold-dark)', fontWeight: 600 }}>
+        🙏 Jay Swaminarayan 🙏
       </div>
     </footer>
   )

@@ -15,20 +15,9 @@ export function HeroCard() {
               letterSpacing: '0.08em',
               color: 'var(--gold-dark)',
               fontWeight: 600,
-              marginBottom: '3px',
             }}
           >
             🙏 Jay Swaminarayan 🙏
-          </p>
-          <p
-            style={{
-              fontSize: '12.5px',
-              letterSpacing: '0.06em',
-              color: 'var(--ink-secondary)',
-              fontWeight: 500,
-            }}
-          >
-            Das na das banavshoji
           </p>
         </div>
 
@@ -58,57 +47,65 @@ export function HeroCard() {
           </div>
         </div>
 
-        {/* Baby Shower Announcement */}
-        <div style={{ marginBottom: '12px' }}>
+        {/* Divine Grace & Blessings Paragraph */}
+        <div style={{ marginBottom: '18px' }}>
           <p
             className="font-display italic"
             style={{
-              fontSize: 'clamp(1.15rem, 4.2vw, 1.45rem)',
-              color: 'var(--maroon)',
-              fontWeight: 600,
-              lineHeight: 1.4,
-              marginBottom: '6px',
-            }}
-          >
-            A Little Bundle of Joy Is on the Way!
-          </p>
-          <p
-            style={{
-              fontSize: '10.5px',
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
+              fontSize: 'clamp(1.05rem, 3.8vw, 1.25rem)',
               color: 'var(--ink-secondary)',
-              fontWeight: 500,
+              lineHeight: 1.6,
+              maxWidth: '440px',
+              margin: '0 auto 16px',
             }}
           >
-            With great happiness, we invite you to celebrate honouring
+            With the divine grace of Aksharpurushottam Maharaj and the blessings of Guruhari Hariprasad Swamiji Maharaj and Guruhari Premswaroop Swamiji Maharaj
           </p>
-        </div>
+          {/* Small diamond / gold ornament */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', margin: '18px 0 16px' }}>
+            <div style={{ height: '1px', width: '40px', background: 'linear-gradient(to right, transparent, var(--gold-light))' }} />
+            <span style={{ fontSize: '10px', color: 'var(--gold-primary)' }}>◆</span>
+            <div style={{ height: '1px', width: '40px', background: 'linear-gradient(to left, transparent, var(--gold-light))' }} />
+          </div>
 
-        {/* Parents to be */}
-        <div style={{ margin: '14px 0 20px' }}>
-          <h1
-            className="font-display gold-heading"
-            style={{
-              fontSize: 'clamp(2.6rem, 10vw, 3.8rem)',
-              fontWeight: 500,
-              lineHeight: 1.05,
-              letterSpacing: '0.01em',
-            }}
-          >
-            Janki <span className="font-display italic font-light" style={{ fontSize: '0.52em', color: 'var(--gold-primary)' }}>&amp;</span> Abhishek
-          </h1>
           <p
             style={{
               fontSize: '11px',
-              letterSpacing: '0.18em',
+              letterSpacing: '0.22em',
               textTransform: 'uppercase',
               color: 'var(--gold-dark)',
               fontWeight: 600,
-              marginTop: '4px',
+              marginBottom: '6px',
             }}
           >
-            Baby Shower Celebration
+            HONOURING THE MUMMY-TO-BE
+          </p>
+
+          <h1
+            className="font-display gold-heading"
+            style={{
+              fontSize: 'clamp(3rem, 12vw, 4.2rem)',
+              fontWeight: 500,
+              fontStyle: 'italic',
+              lineHeight: 1.05,
+              margin: '8px 0 16px',
+              letterSpacing: '0.01em',
+            }}
+          >
+            Janki
+          </h1>
+
+          <p
+            className="font-display italic"
+            style={{
+              fontSize: 'clamp(1.1rem, 4vw, 1.3rem)',
+              color: 'var(--ink-secondary)',
+              lineHeight: 1.5,
+              maxWidth: '420px',
+              margin: '0 auto 8px',
+            }}
+          >
+            As Abhishek and Janki prepare to welcome a sweet soul, we warmly invite you to the baby shower
           </p>
         </div>
 

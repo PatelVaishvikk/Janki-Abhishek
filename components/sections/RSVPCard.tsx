@@ -83,11 +83,8 @@ export function RSVPCard() {
             )}
           </p>
           <div className="divider-gold" style={{ margin: '16px auto', maxWidth: '160px' }} />
-          <p style={{ fontSize: '13px', color: 'var(--gold-dark)', fontWeight: 600, letterSpacing: '0.06em' }}>
+          <p style={{ fontSize: '13px', color: 'var(--gold-dark)', fontWeight: 600, letterSpacing: '0.08em' }}>
             🙏 Jay Swaminarayan 🙏
-          </p>
-          <p style={{ fontSize: '12px', color: 'var(--ink-secondary)', fontWeight: 500, marginTop: '2px' }}>
-            Das na das banavshoji
           </p>
         </div>
       ) : (
