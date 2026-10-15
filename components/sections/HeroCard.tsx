@@ -1,145 +1,193 @@
 'use client'
-import { motion } from 'framer-motion'
+
 import Image from 'next/image'
 
-export function HeroCard({ entered }: { entered: boolean }) {
-  const anim = (delay: number) => ({
-    initial: { opacity: 0, y: 18 },
-    animate: entered ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 },
-    transition: { delay, duration: 0.7, ease: [0.16, 1, 0.3, 1] as const },
-  })
-
+export function HeroCard() {
   return (
-    <div className="card gold-border relative overflow-hidden mt-4 mb-4 text-center"
-      style={{ padding: '36px 24px 28px', background: 'linear-gradient(160deg, rgba(255,255,255,0.92) 0%, rgba(255,248,228,0.88) 100%)' }}>
-      {/* Violet glow at bottom */}
-      <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'180px', background:'radial-gradient(ellipse 90% 80% at 50% 100%, hsl(270,35%,90%,0.5), transparent 70%)', pointerEvents:'none' }} />
-
-      {/* Floating floral petals and sparkles for extra visual delight */}
-      <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 1 }}>
-        <motion.span
-          style={{ position: 'absolute', top: '8%', left: '8%', fontSize: '13px', opacity: 0.35, display: 'inline-block' }}
-          animate={{ y: [0, -10, 0], rotate: [0, 20, 0], scale: [1, 1.15, 1] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        >
-          🌸
-        </motion.span>
-        <motion.span
-          style={{ position: 'absolute', top: '25%', right: '8%', fontSize: '11px', opacity: 0.3, display: 'inline-block' }}
-          animate={{ y: [0, 8, 0], rotate: [0, -15, 0], scale: [1, 0.9, 1] }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-        >
-          ✨
-        </motion.span>
-        <motion.span
-          style={{ position: 'absolute', bottom: '25%', left: '10%', fontSize: '12px', opacity: 0.3, display: 'inline-block' }}
-          animate={{ y: [0, 10, 0], rotate: [0, 30, 0] }}
-          transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-        >
-          🌸
-        </motion.span>
-        <motion.span
-          style={{ position: 'absolute', bottom: '15%', right: '10%', fontSize: '14px', opacity: 0.25, display: 'inline-block' }}
-          animate={{ y: [0, -12, 0], rotate: [0, -25, 0], scale: [1, 1.05, 1] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-        >
-          ✨
-        </motion.span>
-      </div>
-
-      <div className="relative" style={{ zIndex: 2 }}>
-        {/* Deities invocation in Sanskrit/English as requested */}
-        <motion.div
-          {...anim(0.15)}
-          style={{
-            fontSize: 'clamp(11px, 2.8vw, 13px)',
-            color: 'hsl(38,72%,38%)',
-            fontWeight: 600,
-            letterSpacing: '0.04em',
-            marginBottom: '20px',
-            lineHeight: 1.6
-          }}
-        >
-          <div>|| Shri Ganeshaya Namah ||</div>
-          <div>|| Shri Umiya Matayai Namah ||</div>
-          <div>|| Shri Hanumate Namah ||</div>
-        </motion.div>
-
-        {/* Radha-Krishna with a subtle floating animation */}
-        <motion.div
-          className="flex justify-center mb-4"
-          {...anim(0.2)}
-        >
-          <motion.div
-            animate={{ y: [0, -6, 0] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <Image src="/images/radha-krishna.png" alt="Radha and Krishna" width={140} height={140} priority className="drop-shadow-2xl" />
-          </motion.div>
-        </motion.div>
-
-        {/* Badge */}
-        <motion.div {...anim(0.4)}
-          style={{ display:'inline-block', marginBottom:'12px', padding:'4px 14px', borderRadius:'999px', fontSize:'10px', fontWeight:500, letterSpacing:'0.18em', textTransform:'uppercase', color:'hsl(42,55%,42%)', background:'hsl(44,80%,94%)', border:'1px solid hsl(42,60%,78%)' }}>
-          Baby Shower Invitation
-        </motion.div>
-
-        {/* Names */}
-        <motion.h1 {...anim(0.5)} className="font-display gold-text" style={{ fontSize:'clamp(2.4rem,11vw,3.8rem)', fontWeight:600, lineHeight:1.05, marginBottom:'4px' }}>
-          Manish <span className="font-display italic font-light" style={{ fontSize:'0.5em', color:'hsl(38,15%,62%)' }}>&amp;</span> Riddhi
-        </motion.h1>
-
-        {/* Italic sub */}
-        <motion.p {...anim(0.6)} className="font-display italic" style={{ fontSize:'clamp(0.95rem,3.5vw,1.15rem)', color:'hsl(38,12%,52%)', marginBottom:'16px' }}>
-          request the pleasure of your company
-        </motion.p>
-
-        {/* Date & Address chip */}
-        <motion.div {...anim(0.7)}
-          style={{
-            display:'inline-block',
-            padding:'16px 28px',
-            borderRadius:'16px',
-            background:'linear-gradient(135deg, hsl(44,70%,97%) 0%, hsl(42,60%,94%) 100%)',
-            border:'1px solid hsl(42,55%,80%)',
-            boxShadow: '0 2px 10px rgba(180,140,60,0.06)'
-          }}
-        >
-          <p className="font-display" style={{ fontSize:'clamp(1.15rem,5.2vw,1.4rem)', fontWeight:600, color:'hsl(38,72%,36%)', marginBottom:'4px' }}>
-            Sunday, 16th August 2026
-          </p>
-          <p style={{ fontSize:'14px', fontWeight: 600, color:'hsl(38,15%,42%)' }}>9:30 AM</p>
-          <div style={{ width: '50px', height: '1px', background: 'hsl(42,40%,80%)', margin: '10px auto' }} />
-          <p className="font-display" style={{ fontSize:'16px', fontWeight: 700, color:'hsl(38,72%,38%)', marginBottom:'3px' }}>Manek Chowk</p>
-          <p style={{ fontSize:'14px', color:'hsl(38,10%,45%)', lineHeight: 1.5, width: '250px', margin: '0 auto', fontWeight: 500 }}>
-            763–765 Harrow Road<br />Wembley, HA0 2LW<br />United Kingdom
-          </p>
-        </motion.div>
-
-        {/* Tagline */}
-        <motion.p {...anim(0.85)} style={{ marginTop:'14px', fontSize:'12px', fontWeight:600, letterSpacing:'0.14em', textTransform:'uppercase', color:'hsl(340,60%,56%)' }}>
-          Let's shower the Mom-to-Be! 🌸
-        </motion.p>
-
-        {/* Quick RSVP Button */}
-        <motion.div {...anim(0.95)} style={{ marginTop:'20px' }}>
-          <button
-            onClick={() => document.getElementById('rsvp')?.scrollIntoView({ behavior: 'smooth' })}
-            className="pill-btn pill-btn-outline"
+    <section className="wedding-frame" style={{ borderRadius: '4px' }}>
+      <div className="wedding-frame-inner" style={{ textAlign: 'center', padding: '36px 20px 32px' }}>
+        
+        {/* Swaminarayan Invocations */}
+        <div style={{ marginBottom: '18px' }}>
+          <p
             style={{
-              padding: '10px 24px',
-              fontSize: '13px',
+              fontSize: '14px',
+              letterSpacing: '0.08em',
+              color: 'var(--gold-dark)',
               fontWeight: 600,
-              letterSpacing: '0.04em',
-              background: 'rgba(255,255,255,0.4)',
-              backdropFilter: 'blur(8px)',
-              cursor: 'pointer'
+              marginBottom: '3px',
             }}
           >
-            💌 Quick RSVP
+            🙏 Jay Swaminarayan 🙏
+          </p>
+          <p
+            style={{
+              fontSize: '12.5px',
+              letterSpacing: '0.06em',
+              color: 'var(--ink-secondary)',
+              fontWeight: 500,
+            }}
+          >
+            Das na das banavshoji
+          </p>
+        </div>
+
+        {/* Sacred Gunatit Guru Parampara Portrait */}
+        <div style={{ maxWidth: '380px', margin: '0 auto 18px' }}>
+          <div
+            style={{
+              background: '#FFFFFF',
+              padding: '6px',
+              border: '1px solid var(--gold-border)',
+              boxShadow: '0 2px 10px rgba(36, 33, 29, 0.04)',
+              borderRadius: '2px',
+            }}
+          >
+            <Image
+              src="/images/guru-parampara.png"
+              alt="Lord Swaminarayan & Gunatit Guru Parampara"
+              width={1024}
+              height={525}
+              priority
+              style={{
+                width: '100%',
+                height: 'auto',
+                display: 'block',
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Baby Shower Announcement */}
+        <div style={{ marginBottom: '12px' }}>
+          <p
+            className="font-display italic"
+            style={{
+              fontSize: 'clamp(1.15rem, 4.2vw, 1.45rem)',
+              color: 'var(--maroon)',
+              fontWeight: 600,
+              lineHeight: 1.4,
+              marginBottom: '6px',
+            }}
+          >
+            A Little Bundle of Joy Is on the Way!
+          </p>
+          <p
+            style={{
+              fontSize: '10.5px',
+              letterSpacing: '0.2em',
+              textTransform: 'uppercase',
+              color: 'var(--ink-secondary)',
+              fontWeight: 500,
+            }}
+          >
+            With great happiness, we invite you to celebrate honouring
+          </p>
+        </div>
+
+        {/* Parents to be */}
+        <div style={{ margin: '14px 0 20px' }}>
+          <h1
+            className="font-display gold-heading"
+            style={{
+              fontSize: 'clamp(2.6rem, 10vw, 3.8rem)',
+              fontWeight: 500,
+              lineHeight: 1.05,
+              letterSpacing: '0.01em',
+            }}
+          >
+            Janki <span className="font-display italic font-light" style={{ fontSize: '0.52em', color: 'var(--gold-primary)' }}>&amp;</span> Abhishek
+          </h1>
+          <p
+            style={{
+              fontSize: '11px',
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+              color: 'var(--gold-dark)',
+              fontWeight: 600,
+              marginTop: '4px',
+            }}
+          >
+            Baby Shower Celebration
+          </p>
+        </div>
+
+        {/* Gold Ornament Divider */}
+        <div className="divider-gold" style={{ margin: '16px auto', maxWidth: '240px' }} />
+
+        {/* Date, Time & Venue Block */}
+        <div style={{ maxWidth: '380px', margin: '0 auto 18px' }}>
+          <p
+            className="font-display"
+            style={{
+              fontSize: 'clamp(1.35rem, 5vw, 1.65rem)',
+              fontWeight: 600,
+              color: 'var(--ink-primary)',
+              marginBottom: '3px',
+            }}
+          >
+            Sunday, November 22, 2026
+          </p>
+          <p
+            style={{
+              fontSize: '12.5px',
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: 'var(--gold-dark)',
+              fontWeight: 600,
+              marginBottom: '10px',
+            }}
+          >
+            9:00 AM onwards
+          </p>
+
+          <p
+            className="font-display"
+            style={{
+              fontSize: '1.25rem',
+              color: 'var(--ink-primary)',
+              fontWeight: 600,
+              marginBottom: '2px',
+            }}
+          >
+            Haridham Toronto
+          </p>
+          <p
+            style={{
+              fontSize: '13px',
+              color: 'var(--ink-secondary)',
+              lineHeight: 1.5,
+            }}
+          >
+            7605 Danbro Crescent · Mississauga, ON L5N 6P9
+          </p>
+        </div>
+
+        {/* Personal Message */}
+        <p
+          className="font-display italic"
+          style={{
+            fontSize: '1.05rem',
+            color: 'var(--ink-secondary)',
+            lineHeight: 1.6,
+            maxWidth: '380px',
+            margin: '0 auto 22px',
+          }}
+        >
+          &ldquo;Come share your love, laughter, and blessings as we celebrate this wonderful new chapter together!&rdquo;
+        </p>
+
+        {/* RSVP anchor button */}
+        <div>
+          <button
+            onClick={() => document.getElementById('rsvp')?.scrollIntoView({ behavior: 'smooth' })}
+            className="btn-primary"
+          >
+            Confirm Your Attendance
           </button>
-        </motion.div>
+        </div>
+
       </div>
-    </div>
+    </section>
   )
 }

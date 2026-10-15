@@ -1,224 +1,244 @@
-import { useRef, useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+'use client'
+
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { motion, AnimatePresence, useInView } from 'framer-motion'
 
-const schema = z.object({
-  name:       z.string().min(1,'Name required').max(100),
-  attending:  z.enum(['yes','no']),
-  guestCount: z.preprocess(
-    (val) => (val === '' || val === null || val === undefined ? undefined : val),
-    z.coerce.number().min(1).max(10).optional()
-  ),
-  message:    z.string().max(500).optional(),
-}).refine(
-  (data) => {
-    if (data.attending === 'yes') {
-      return data.guestCount !== undefined && data.guestCount >= 1;
-    }
-    return true;
-  },
-  {
-    message: 'Number of guests is required',
-    path: ['guestCount'],
-  }
-)
-type FormData = z.infer<typeof schema>
+const rsvpSchema = z.object({
+  name: z.string().min(2, 'Please enter your full name'),
+  attending: z.enum(['yes', 'no']),
+  guestCount: z.coerce.number().min(1).max(10).optional(),
+  message: z.string().max(500).optional(),
+})
 
-function ConfettiParticles() {
-  const [particles, setParticles] = useState<{ id: number; x: number; y: number; color: string; size: number; delay: number; duration: number }[]>([])
-  useEffect(() => {
-    const colors = ['#f472b6', '#fbbf24', '#a78bfa', '#34d399', '#60a5fa']
-    const items = Array.from({ length: 30 }).map((_, i) => ({
-      id: i,
-      x: Math.random() * 80 + 10, // 10% to 90%
-      y: Math.random() * -40 - 20,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      size: Math.random() * 8 + 6,
-      delay: Math.random() * 0.4,
-      duration: Math.random() * 1.5 + 1.2
-    }))
-    setParticles(items)
-  }, [])
-
-  return (
-    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none', borderRadius: '24px' }}>
-      {particles.map((p) => (
-        <motion.div
-          key={p.id}
-          style={{
-            position: 'absolute',
-            left: `${p.x}%`,
-            width: p.size,
-            height: p.size,
-            borderRadius: Math.random() > 0.5 ? '50%' : '2px',
-            backgroundColor: p.color,
-          }}
-          initial={{ y: p.y, opacity: 1, rotate: 0 }}
-          animate={{
-            y: 400,
-            opacity: [1, 1, 0],
-            rotate: 360 + Math.random() * 360
-          }}
-          transition={{
-            duration: p.duration,
-            delay: p.delay,
-            ease: 'easeOut'
-          }}
-        />
-      ))}
-    </div>
-  )
-}
+type RSVPFormData = z.infer<typeof rsvpSchema>
 
 export function RSVPCard() {
-  const router = useRouter()
-  const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, margin: '-50px' as any })
-  const [status, setStatus] = useState<'idle'|'loading'|'error'|'success'>('idle')
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [submittedData, setSubmittedData] = useState<{ name: string; attending: boolean } | null>(null)
-  
-  const { register, handleSubmit, watch, setValue, formState:{errors} } = useForm<FormData>({
-    resolver: zodResolver(schema),
-    defaultValues: { attending:'yes', guestCount:1 },
+
+  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<RSVPFormData>({
+    resolver: zodResolver(rsvpSchema),
+    defaultValues: { attending: 'yes', guestCount: 1, message: '' },
   })
+
   const attending = watch('attending')
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: RSVPFormData) => {
     setStatus('loading')
-    const firstName = data.name.split(' ')[0]
+    const firstName = data.name.trim().split(' ')[0]
     const payload = { ...data }
     if (payload.attending === 'no') {
       delete payload.guestCount
     }
     try {
-      const res = await fetch('/api/rsvp',{ 
-        method:'POST', 
-        headers:{'Content-Type':'application/json'}, 
-        body:JSON.stringify(payload) 
+      const res = await fetch('/api/rsvp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       })
-      if (res.status === 201) {
+      if (res.status === 201 || res.ok) {
         setSubmittedData({ name: firstName, attending: payload.attending === 'yes' })
         setStatus('success')
       } else {
         setStatus('error')
       }
-    } catch { setStatus('error') }
+    } catch {
+      setStatus('error')
+    }
   }
 
   return (
-    <div ref={ref} id="rsvp" className="card gold-border mb-4" style={{ padding:'24px 20px', background:'rgba(255,255,255,0.78)', position: 'relative' }}>
-      <AnimatePresence mode="wait">
-        {status === 'success' && submittedData ? (
-          <motion.div
-            key="thank-you"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0 }}
-            style={{ textAlign: 'center', padding: '24px 10px' }}
+    <section id="rsvp" className="wedding-card" style={{ padding: '36px 24px', borderRadius: '4px' }}>
+      {status === 'success' && submittedData ? (
+        <div style={{ textAlign: 'center', padding: '24px 12px' }}>
+          <p
+            style={{
+              fontSize: '11px',
+              letterSpacing: '0.22em',
+              textTransform: 'uppercase',
+              color: 'var(--gold-dark)',
+              fontWeight: 600,
+              marginBottom: '6px',
+            }}
           >
-            <ConfettiParticles />
-            <div style={{ fontSize: '48px', marginBottom: '16px' }}>🌸</div>
-            <h3 className="font-display gold-text" style={{ fontSize: 'clamp(1.6rem, 7vw, 2.2rem)', fontWeight: 600, marginBottom: '8px' }}>
-              Thank You, {submittedData.name}!
-            </h3>
-            <p className="font-display italic" style={{ fontSize: '16px', color: 'hsl(38,15%,36%)', marginBottom: '16px' }}>
-              Your RSVP has been received.
-            </p>
-            <div style={{ margin: '0 auto 18px', width: '60px', height: '1px', background: 'hsl(42,50%,80%)' }} />
-            <p style={{ fontSize: '14px', color: 'hsl(38,12%,42%)', lineHeight: 1.65 }}>
-              {submittedData.attending ? (
-                <>
-                  We are absolutely thrilled to celebrate this special day with you. We can&apos;t wait to see you on <strong>Sunday, 16th August 2026</strong>!
-                </>
-              ) : (
-                <>
-                  We are sorry you won&apos;t be able to make it, but we deeply appreciate your warm wishes and blessings from afar.
-                </>
-              )}
-            </p>
-          </motion.div>
-        ) : (
-          <motion.div
-            key="form"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            Response Recorded
+          </p>
+          <h3
+            className="font-display gold-heading"
+            style={{ fontSize: 'clamp(1.8rem, 7vw, 2.4rem)', fontWeight: 500, marginBottom: '12px' }}
           >
-            <div style={{ textAlign:'center', marginBottom:'20px' }}>
-              <p style={{ fontSize:'10px', letterSpacing:'0.2em', textTransform:'uppercase', color:'hsl(42,55%,48%)', fontWeight:500, marginBottom:'4px' }}>Will you join us?</p>
-              <h2 className="font-display" style={{ fontSize:'clamp(1.5rem,6.5vw,2.2rem)', fontWeight:500, color:'hsl(38,18%,22%)' }}>Send your RSVP</h2>
+            Thank You, {submittedData.name}
+          </h3>
+          <p style={{ fontSize: '14px', color: 'var(--ink-secondary)', lineHeight: 1.7, maxWidth: '360px', margin: '0 auto 16px' }}>
+            {submittedData.attending ? (
+              <>
+                We look forward with great happiness to celebrating this special milestone with you on <strong>Sunday, November 22, 2026</strong> at Haridham Toronto.
+              </>
+            ) : (
+              <>
+                We will miss you, but deeply appreciate your warm love and blessings for the parents-to-be from afar.
+              </>
+            )}
+          </p>
+          <div className="divider-gold" style={{ margin: '16px auto', maxWidth: '160px' }} />
+          <p style={{ fontSize: '13px', color: 'var(--gold-dark)', fontWeight: 600, letterSpacing: '0.06em' }}>
+            🙏 Jay Swaminarayan 🙏
+          </p>
+          <p style={{ fontSize: '12px', color: 'var(--ink-secondary)', fontWeight: 500, marginTop: '2px' }}>
+            Das na das banavshoji
+          </p>
+        </div>
+      ) : (
+        <div>
+          <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+            <p
+              style={{
+                fontSize: '10px',
+                letterSpacing: '0.24em',
+                textTransform: 'uppercase',
+                color: 'var(--gold-dark)',
+                fontWeight: 600,
+                marginBottom: '4px',
+              }}
+            >
+              RSVP
+            </p>
+            <h2
+              className="font-display"
+              style={{
+                fontSize: 'clamp(1.7rem, 6vw, 2.2rem)',
+                fontWeight: 500,
+                color: 'var(--ink-primary)',
+                marginBottom: '4px',
+              }}
+            >
+              Confirm Your Attendance
+            </h2>
+            <p style={{ fontSize: '12px', color: 'var(--maroon)', fontWeight: 600, letterSpacing: '0.04em' }}>
+              Please RSVP by October 31, 2026
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit(onSubmit)} noValidate style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            {/* Full Name */}
+            <div>
+              <label htmlFor="rsvp-name" style={{ fontSize: '11px', letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 600, color: 'var(--ink-secondary)', display: 'block', marginBottom: '6px' }}>
+                Full Name *
+              </label>
+              <input
+                id="rsvp-name"
+                className="input-elegant"
+                placeholder="Enter your name"
+                {...register('name')}
+              />
+              {errors.name && <p style={{ fontSize: '11px', color: 'var(--maroon)', marginTop: '4px' }}>{errors.name.message}</p>}
             </div>
 
-            <form onSubmit={handleSubmit(onSubmit)} noValidate style={{ display:'flex', flexDirection:'column', gap:'14px' }}>
-              {/* Name */}
-              <div style={{ display:'flex', flexDirection:'column', gap:'5px' }}>
-                <label htmlFor="rsvp-name" style={{ fontSize:'11px', fontWeight:500, color:'hsl(38,15%,34%)', letterSpacing:'0.06em' }}>
-                  Your name <span style={{ color:'hsl(355,65%,54%)' }} aria-hidden="true">*</span>
+            {/* Attendance Toggle */}
+            <div>
+              <label style={{ fontSize: '11px', letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 600, color: 'var(--ink-secondary)', display: 'block', marginBottom: '8px' }}>
+                Will You Be Attending? *
+              </label>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button
+                  type="button"
+                  onClick={() => setValue('attending', 'yes')}
+                  style={{
+                    flex: 1,
+                    padding: '12px 10px',
+                    borderRadius: '2px',
+                    border: attending === 'yes' ? '1.5px solid var(--gold-dark)' : '1px solid var(--gold-border)',
+                    background: attending === 'yes' ? 'var(--gold-subtle)' : '#FFFFFF',
+                    color: attending === 'yes' ? 'var(--gold-dark)' : 'var(--ink-secondary)',
+                    fontWeight: attending === 'yes' ? 600 : 500,
+                    fontSize: '12px',
+                    letterSpacing: '0.06em',
+                    textTransform: 'uppercase',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                  }}
+                >
+                  Joyfully Attending
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setValue('attending', 'no')}
+                  style={{
+                    flex: 1,
+                    padding: '12px 10px',
+                    borderRadius: '2px',
+                    border: attending === 'no' ? '1.5px solid var(--gold-dark)' : '1px solid var(--gold-border)',
+                    background: attending === 'no' ? 'var(--gold-subtle)' : '#FFFFFF',
+                    color: attending === 'no' ? 'var(--gold-dark)' : 'var(--ink-secondary)',
+                    fontWeight: attending === 'no' ? 600 : 500,
+                    fontSize: '12px',
+                    letterSpacing: '0.06em',
+                    textTransform: 'uppercase',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                  }}
+                >
+                  Unable to Attend
+                </button>
+              </div>
+            </div>
+
+            {/* Guest Count */}
+            {attending === 'yes' && (
+              <div>
+                <label htmlFor="rsvp-guests" style={{ fontSize: '11px', letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 600, color: 'var(--ink-secondary)', display: 'block', marginBottom: '6px' }}>
+                  Number of Guests Attending
                 </label>
-                <input id="rsvp-name" className={`field-input${errors.name?' error':''}`} placeholder="Enter your name" {...register('name')} />
-                {errors.name&&<p role="alert" style={{ fontSize:'11px', color:'hsl(355,65%,50%)' }}>⚠ {errors.name.message}</p>}
-              </div>
-
-              {/* Attend pill */}
-              <div style={{ display:'flex', flexDirection:'column', gap:'6px' }}>
-                <p style={{ fontSize:'11px', fontWeight:500, color:'hsl(38,15%,34%)', letterSpacing:'0.06em' }} id="attend-lbl">
-                  Will you attend? <span style={{ color:'hsl(355,65%,54%)' }} aria-hidden="true">*</span>
-                </p>
-                <div role="radiogroup" aria-labelledby="attend-lbl" style={{ display:'flex', background:'hsl(40,20%,92%)', borderRadius:'999px', padding:'4px', gap:'4px', position:'relative' }}>
-                  <motion.div style={{ position:'absolute', top:'4px', bottom:'4px', borderRadius:'999px', width:'calc(50% - 4px)',
-                    left: attending==='yes'?'4px':'calc(50%)',
-                    background: attending==='yes'?'linear-gradient(135deg,hsl(140,55%,36%),hsl(140,50%,46%))':'linear-gradient(135deg,hsl(355,60%,48%),hsl(355,55%,57%))'
-                  }} transition={{ type:'spring', stiffness:420, damping:36 }} />
-                  {(['yes','no'] as const).map(opt=>(
-                    <button key={opt} type="button" role="radio" aria-checked={attending===opt} onClick={()=>setValue('attending',opt)}
-                      style={{ flex:1, zIndex:1, padding:'10px 6px', borderRadius:'999px', fontSize:'13px', fontWeight:500, border:'none', background:'transparent', cursor:'pointer',
-                        color: attending===opt?'#fff':'hsl(38,12%,46%)', transition:'color 0.2s', display:'flex', alignItems:'center', justifyContent:'center', gap:'5px' }}>
-                      <span aria-hidden="true">{opt==='yes'?'✓':'✕'}</span>
-                      {opt==='yes'?'Attending':"Can't make it"}
-                    </button>
+                <select
+                  id="rsvp-guests"
+                  className="input-elegant"
+                  {...register('guestCount')}
+                >
+                  {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
+                    <option key={num} value={num}>
+                      {num} {num === 1 ? 'Guest' : 'Guests'}
+                    </option>
                   ))}
-                </div>
+                </select>
               </div>
+            )}
 
-              {/* Guest count */}
-              <AnimatePresence>
-                {attending==='yes'&&(
-                  <motion.div style={{ display:'flex', flexDirection:'column', gap:'5px' }}
-                    initial={{ opacity:0, height:0 }} animate={{ opacity:1, height:'auto' }} exit={{ opacity:0, height:0 }} transition={{ duration:0.28 }}>
-                    <label htmlFor="rsvp-guests" style={{ fontSize:'11px', fontWeight:500, color:'hsl(38,15%,34%)', letterSpacing:'0.06em' }}>Number of guests</label>
-                    <input id="rsvp-guests" type="number" min={1} max={10} className="field-input" {...register('guestCount')} />
-                    <p style={{ fontSize:'11px', color:'hsl(38,10%,58%)' }}>Including yourself</p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+            {/* Message */}
+            <div>
+              <label htmlFor="rsvp-msg" style={{ fontSize: '11px', letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 600, color: 'var(--ink-secondary)', display: 'block', marginBottom: '6px' }}>
+                Blessings or Warm Wishes for Baby &amp; Parents
+              </label>
+              <textarea
+                id="rsvp-msg"
+                rows={3}
+                className="input-elegant"
+                placeholder="Share your blessings and love..."
+                style={{ resize: 'vertical' }}
+                {...register('message')}
+              />
+            </div>
 
-              {/* Message */}
-              <div style={{ display:'flex', flexDirection:'column', gap:'5px' }}>
-                <label htmlFor="rsvp-msg" style={{ fontSize:'11px', fontWeight:500, color:'hsl(38,15%,34%)', letterSpacing:'0.06em' }}>A blessing or message (optional)</label>
-                <textarea id="rsvp-msg" rows={3} className="field-input" placeholder="Share a warm wish…" style={{ resize:'none' }} {...register('message')} />
-              </div>
+            {status === 'error' && (
+              <p style={{ fontSize: '12px', color: 'var(--maroon)', textAlign: 'center' }}>
+                An error occurred while submitting your response. Please try again.
+              </p>
+            )}
 
-              {status==='error'&&(
-                <motion.div role="alert" style={{ borderRadius:'12px', background:'hsl(355,60%,97%)', border:'1px solid hsl(355,60%,84%)', padding:'11px 14px', fontSize:'13px', color:'hsl(355,60%,44%)' }}
-                  initial={{ opacity:0 }} animate={{ opacity:1 }}>
-                  ⚠ Something went wrong. Please try again.
-                </motion.div>
-              )}
-
-              <button type="submit" disabled={status==='loading'} className="pill-btn pill-btn-gold" style={{ width:'100%', marginTop:'4px' }}>
-                {status==='loading'
-                  ?<span style={{ display:'flex', alignItems:'center', gap:'8px' }}>
-                      <svg style={{ animation:'spin 1s linear infinite', width:'15px', height:'15px' }} viewBox="0 0 24 24" fill="none"><circle opacity=".25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path opacity=".75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.37 0 0 5.37 0 12h4z"/></svg>Sending…
-                    </span>
-                  :'Send with Love 💌'}
+            <div style={{ marginTop: '6px' }}>
+              <button
+                type="submit"
+                disabled={status === 'loading'}
+                className="btn-primary"
+                style={{ width: '100%', padding: '14px' }}
+              >
+                {status === 'loading' ? 'Submitting...' : 'Confirm RSVP'}
               </button>
-            </form>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+            </div>
+          </form>
+        </div>
+      )}
+    </section>
   )
 }

@@ -180,8 +180,8 @@ export default function Dashboard() {
         {/* Header */}
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px', gap: '16px' }}>
           <div>
-            <h1 className="font-display gold-text" style={{ fontSize: 'clamp(2rem, 5vw, 2.5rem)', fontWeight: 600 }}>Guest Directory</h1>
-            <p style={{ fontSize: '14px', color: 'var(--ink-muted)' }}>Real-time RSVP responses for Manish & Riddhi&apos;s celebration</p>
+            <h1 className="font-display gold-heading" style={{ fontSize: 'clamp(2rem, 5vw, 2.5rem)', fontWeight: 600 }}>Guest Directory</h1>
+            <p style={{ fontSize: '14px', color: 'var(--ink-secondary)' }}>Real-time RSVP responses for Janki &amp; Abhishek&apos;s Baby Shower</p>
           </div>
           <div style={{ display: 'flex', gap: '12px' }}>
             <Link href="/" className="pill-btn pill-btn-outline" style={{ padding: '8px 16px', fontSize: '13px', textDecoration: 'none' }}>
