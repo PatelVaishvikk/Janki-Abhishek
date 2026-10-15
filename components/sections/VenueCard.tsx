@@ -5,7 +5,7 @@ import { useState } from 'react'
 const ADDRESS_TEXT = 'Haridham Toronto, 7605 Danbro Crescent, Mississauga, ON L5N 6P9'
 const MAP_EMBED = 'https://www.google.com/maps?q=Haridham+Toronto+7605+Danbro+Crescent+Mississauga+ON+L5N+6P9&output=embed'
 const MAP_DIR = 'https://www.google.com/maps/dir/?api=1&destination=Haridham+Toronto,+7605+Danbro+Crescent,+Mississauga,+ON+L5N+6P9'
-const GCAL_URL = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Baby Shower · Janki & Abhishek')}&dates=20261122T140000Z/20261122T190000Z&details=${encodeURIComponent('Baby Shower Celebration for Janki & Abhishek\nDress Code: Traditional\nKindly, no boxed gifts.\nJay Swaminarayan 🙏 Das na das 🙏')}&location=${encodeURIComponent(ADDRESS_TEXT)}`
+const GCAL_URL = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Baby Shower · Janki & Abhishek')}&dates=20261122T140000Z/20261122T190000Z&details=${encodeURIComponent('Baby Shower Celebration for Janki & Abhishek\nDress Code: Traditional\nKindly, no boxed gifts.\nJay Swaminarayan 🙏')}&location=${encodeURIComponent(ADDRESS_TEXT)}`
 
 export function VenueCard() {
   const [copied, setCopied] = useState(false)

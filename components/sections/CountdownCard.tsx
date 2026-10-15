@@ -1,108 +1,157 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { useState, useEffect } from 'react'
 
-const TARGET = new Date('2026-11-22T09:00:00-05:00') // November 22, 2026 9:00 AM EST
+const TARGET_DATE = new Date('2026-11-22T09:00:00-05:00') // November 22, 2026, 9:00 AM EST
 
-interface Unit {
-  value: number
-  label: string
+interface TimeRemaining {
+  days: number
+  hours: number
+  minutes: number
+  seconds: number
+  isPast: boolean
 }
 
-function pad(n: number) {
+function calculateTimeRemaining(): TimeRemaining {
+  const diff = TARGET_DATE.getTime() - Date.now()
+  if (diff <= 0) {
+    return { days: 0, hours: 0, minutes: 0, seconds: 0, isPast: true }
+  }
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24)
+  const minutes = Math.floor((diff / (1000 * 60)) % 60)
+  const seconds = Math.floor((diff / 1000) % 60)
+
+  return { days, hours, minutes, seconds, isPast: false }
+}
+
+function pad(n: number): string {
   return String(n).padStart(2, '0')
 }
 
-function getRemaining(): Unit[] | null {
-  const diff = TARGET.getTime() - Date.now()
-  if (diff <= 0) return null
-  const d = Math.floor(diff / 86400000)
-  const h = Math.floor((diff % 86400000) / 3600000)
-  const m = Math.floor((diff % 3600000) / 60000)
-  const s = Math.floor((diff % 60000) / 1000)
-  return [
-    { value: d, label: 'Days' },
-    { value: h, label: 'Hours' },
-    { value: m, label: 'Mins' },
-    { value: s, label: 'Secs' },
-  ]
-}
-
 export function CountdownCard() {
-  const ref = useRef<HTMLDivElement>(null)
-  const inView = useInView(ref, { once: true, margin: '-50px' as any })
-  const [units, setUnits] = useState<Unit[] | null>(getRemaining)
+  const [timeLeft, setTimeLeft] = useState<TimeRemaining>({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+    isPast: false,
+  })
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    const id = setInterval(() => setUnits(getRemaining()), 1000)
-    return () => clearInterval(id)
+    setMounted(true)
+    setTimeLeft(calculateTimeRemaining())
+
+    const interval = setInterval(() => {
+      setTimeLeft(calculateTimeRemaining())
+    }, 1000)
+
+    return () => clearInterval(interval)
   }, [])
 
-  return (
-    <div ref={ref} className="card mb-4" style={{ padding: '24px 20px', textAlign: 'center' }}>
-      <motion.p
-        style={{
-          fontSize: '10px',
-          letterSpacing: '0.2em',
-          textTransform: 'uppercase',
-          color: 'hsl(42,55%,48%)',
-          fontWeight: 600,
-          marginBottom: '14px',
-        }}
-        initial={{ opacity: 0 }}
-        animate={inView ? { opacity: 1 } : {}}
-        transition={{ duration: 0.5 }}
-      >
-        ✨ Counting down to the big day
-      </motion.p>
+  const units = [
+    { label: 'Days', value: timeLeft.days },
+    { label: 'Hours', value: timeLeft.hours },
+    { label: 'Minutes', value: timeLeft.minutes },
+    { label: 'Seconds', value: timeLeft.seconds },
+  ]
 
-      {units === null ? (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          style={{ fontSize: '18px', color: 'hsl(38,72%,36%)', fontWeight: 600 }}
+  return (
+    <section className="wedding-frame" style={{ borderRadius: '4px' }}>
+      <div className="wedding-frame-inner" style={{ textAlign: 'center', padding: '28px 18px 26px' }}>
+        
+        {/* Header Ornament */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '8px' }}>
+          <div style={{ height: '1px', width: '30px', background: 'linear-gradient(to right, transparent, var(--gold-light))' }} />
+          <span style={{ fontSize: '9px', color: 'var(--gold-primary)' }}>◆</span>
+          <div style={{ height: '1px', width: '30px', background: 'linear-gradient(to left, transparent, var(--gold-light))' }} />
+        </div>
+
+        <p
+          style={{
+            fontSize: '10.5px',
+            letterSpacing: '0.22em',
+            textTransform: 'uppercase',
+            color: 'var(--gold-dark)',
+            fontWeight: 600,
+            marginBottom: '16px',
+          }}
         >
-          🎉 The celebration is underway!
-        </motion.div>
-      ) : (
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '8px' }}>
-          {units.map(({ value, label }, idx) => (
-            <motion.div
-              key={label}
-              initial={{ opacity: 0, y: 14 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.1 * idx, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              style={{
-                flex: 1,
-                maxWidth: '82px',
-                padding: '12px 6px',
-                borderRadius: '16px',
-                background: 'linear-gradient(145deg, hsl(44,60%,97%) 0%, hsl(42,40%,93%) 100%)',
-                border: '1px solid hsl(42,45%,82%)',
-              }}
-            >
+          Counting Down The Auspicious Days
+        </p>
+
+        {mounted && timeLeft.isPast ? (
+          <p className="font-display italic" style={{ fontSize: '1.25rem', color: 'var(--maroon)' }}>
+            The celebration has begun!
+          </p>
+        ) : (
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(4, 1fr)',
+              gap: '8px',
+              maxWidth: '440px',
+              margin: '0 auto',
+            }}
+          >
+            {units.map((unit) => (
               <div
-                className="font-display gold-text"
-                style={{ fontSize: 'clamp(1.6rem, 6vw, 2.1rem)', fontWeight: 600, lineHeight: 1, marginBottom: '4px' }}
-              >
-                {pad(value)}
-              </div>
-              <div
+                key={unit.label}
                 style={{
-                  fontSize: '9px',
-                  fontWeight: 600,
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                  color: 'hsl(38,12%,50%)',
+                  background: '#FFFFFF',
+                  border: '1px solid var(--gold-border)',
+                  borderRadius: '2px',
+                  padding: '12px 4px 10px',
+                  boxShadow: '0 1px 4px rgba(36, 33, 29, 0.03)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
-                {label}
+                <div
+                  className="font-display gold-heading"
+                  style={{
+                    fontSize: 'clamp(1.7rem, 6.5vw, 2.3rem)',
+                    fontWeight: 600,
+                    lineHeight: 1,
+                    marginBottom: '4px',
+                    fontVariantNumeric: 'tabular-nums',
+                  }}
+                >
+                  {mounted ? pad(unit.value) : '--'}
+                </div>
+                <div
+                  style={{
+                    fontSize: '9px',
+                    letterSpacing: '0.14em',
+                    textTransform: 'uppercase',
+                    color: 'var(--ink-secondary)',
+                    fontWeight: 600,
+                  }}
+                >
+                  {unit.label}
+                </div>
               </div>
-            </motion.div>
-          ))}
-        </div>
-      )}
-    </div>
+            ))}
+          </div>
+        )}
+
+        <p
+          className="font-display italic"
+          style={{
+            fontSize: '13px',
+            color: 'var(--ink-muted)',
+            marginTop: '16px',
+            letterSpacing: '0.02em',
+          }}
+        >
+          Sunday, November 22, 2026 · 9:00 AM onwards
+        </p>
+
+      </div>
+    </section>
   )
 }

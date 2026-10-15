@@ -46,6 +46,7 @@ export function AudioPlayer({ src }: AudioPlayerProps) {
           window.addEventListener('scroll', unlock, { once: true, passive: true })
           window.addEventListener('pointerdown', unlock, { once: true })
           window.addEventListener('keydown', unlock, { once: true })
+          window.addEventListener('play-audio', unlock, { once: true })
         })
     }
   }, [])
