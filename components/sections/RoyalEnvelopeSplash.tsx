@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { triggerConfetti } from '@/components/ui/Confetti'
 
 interface RoyalEnvelopeSplashProps {
   onOpen?: () => void
@@ -26,6 +27,9 @@ export function RoyalEnvelopeSplash({ onOpen }: RoyalEnvelopeSplashProps) {
 
   const handleOpen = () => {
     if (stage !== 'idle' || isDismissed) return
+
+    // Trigger celebratory confetti burst on envelope tap
+    triggerConfetti({ particleCount: 85, originY: 0.55 })
 
     // Step 1: Wax seal softly begins unsealing
     setStage('unsealing')

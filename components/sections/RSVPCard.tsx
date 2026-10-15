@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { triggerConfetti } from '@/components/ui/Confetti'
 
 const rsvpSchema = z.object({
   name: z.string().min(2, 'Please enter your full name'),
@@ -41,6 +42,7 @@ export function RSVPCard() {
       if (res.status === 201 || res.ok) {
         setSubmittedData({ name: firstName, attending: payload.attending === 'yes' })
         setStatus('success')
+        triggerConfetti({ particleCount: 90, originY: 0.6 })
       } else {
         setStatus('error')
       }
