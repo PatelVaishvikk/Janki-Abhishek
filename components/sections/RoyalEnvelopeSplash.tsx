@@ -295,66 +295,30 @@ export function RoyalEnvelopeSplash({ onOpen }: RoyalEnvelopeSplashProps) {
 
             <p
               style={{
-                fontSize: '9.5px',
-                letterSpacing: '0.22em',
+                fontSize: '11px',
+                letterSpacing: '0.16em',
                 textTransform: 'uppercase',
                 color: 'var(--maroon)',
                 fontWeight: 600,
-                marginBottom: '2px',
+                marginBottom: '6px',
               }}
             >
-              Baby Shower Celebration
+              You Are Cordially Invited To
             </p>
 
             <h2
               className="font-display gold-heading"
               style={{
-                fontSize: 'clamp(1.75rem, 6.2vw, 2.4rem)',
+                fontSize: 'clamp(1.8rem, 6.2vw, 2.45rem)',
                 fontWeight: 500,
                 fontStyle: 'italic',
-                lineHeight: 1.1,
-                margin: '2px 0 4px',
+                lineHeight: 1.15,
+                margin: '2px 0 6px',
+                textAlign: 'center',
               }}
             >
-              Janki <span className="font-display italic font-light" style={{ fontSize: '0.6em', color: 'var(--gold-primary)' }}>&amp;</span> Abhishek
+              Janki&apos;s Baby Shower
             </h2>
-
-            <p
-              style={{
-                fontSize: '9.5px',
-                letterSpacing: '0.18em',
-                textTransform: 'uppercase',
-                color: 'var(--gold-dark)',
-                fontWeight: 600,
-                marginBottom: '6px',
-              }}
-            >
-              Honouring The Mummy-to-be
-            </p>
-
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '6px',
-                margin: '4px 0 6px',
-              }}
-            >
-              <div style={{ height: '1px', width: '28px', background: 'var(--gold-light)' }} />
-              <span style={{ fontSize: '8px', color: 'var(--gold-primary)' }}>◆</span>
-              <div style={{ height: '1px', width: '28px', background: 'var(--gold-light)' }} />
-            </div>
-
-            <p
-              style={{
-                fontSize: '10.5px',
-                color: 'var(--ink-secondary)',
-                letterSpacing: '0.04em',
-              }}
-            >
-              Sunday, November 22, 2026 · 9:00 AM
-            </p>
           </div>
         </div>
 
@@ -519,7 +483,7 @@ export function RoyalEnvelopeSplash({ onOpen }: RoyalEnvelopeSplashProps) {
               <span
                 className="font-display italic"
                 style={{
-                  fontSize: '21px',
+                  fontSize: '26px',
                   fontWeight: 600,
                   color: '#FAF7F2',
                   textShadow: '0 1px 2px rgba(0,0,0,0.5)',
@@ -527,7 +491,7 @@ export function RoyalEnvelopeSplash({ onOpen }: RoyalEnvelopeSplashProps) {
                   letterSpacing: '0.02em',
                 }}
               >
-                J&amp;A
+                J
               </span>
             </div>
           </div>
