@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import dynamic from 'next/dynamic'
 import { RoyalEnvelopeSplash } from '@/components/sections/RoyalEnvelopeSplash'
+import { RoyalPetalShower } from '@/components/ui/RoyalPetalShower'
 import { HeroCard } from '@/components/sections/HeroCard'
 import { CountdownCard } from '@/components/sections/CountdownCard'
 import { VenueCard } from '@/components/sections/VenueCard'
@@ -22,6 +23,9 @@ export default function Home() {
     <main style={{ minHeight: '100vh', padding: '32px 16px 64px' }}>
       {/* Luxury Royal Stationery Envelope Opening Experience */}
       <RoyalEnvelopeSplash onOpen={() => setHasOpened(true)} />
+
+      {/* Dainty Botanical Rose Petal Shower */}
+      <RoyalPetalShower active={true} />
 
       {/* Background Devotional Shehnai / Music */}
       <AudioPlayer src="/audio/background.mp3" />
