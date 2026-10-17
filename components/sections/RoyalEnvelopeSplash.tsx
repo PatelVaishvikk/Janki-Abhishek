@@ -303,7 +303,7 @@ export function RoyalEnvelopeSplash({ onOpen }: RoyalEnvelopeSplashProps) {
                 marginBottom: '6px',
               }}
             >
-              You Are Cordially Invited To
+              We Cordially Invite You To
             </p>
 
             <h2
